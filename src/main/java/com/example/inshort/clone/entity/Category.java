@@ -13,22 +13,13 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Article {
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
-    private String description;
-    private String addedBy;
     private Timestamp timestamp;
 
-    @ManyToMany
-            @JoinTable(
-                    name = "article_category",
-                    joinColumns = @JoinColumn(name = "articleId"),
-                    inverseJoinColumns = @JoinColumn(name = "categoryId")
-            )
-
-    List<Category> categories;
-
+    @ManyToMany(mappedBy = "categories")
+    private List<Article> articles;
 }

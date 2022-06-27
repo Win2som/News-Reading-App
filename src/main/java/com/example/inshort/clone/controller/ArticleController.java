@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class ArticleController {
@@ -16,11 +17,6 @@ public class ArticleController {
    @Autowired
    ArticleService articleService;
 
-    @GetMapping("/article")
-    public List<Article> getAllArticles(){
-
-        return articleService.getAllArticles();
-    }
 
     @PostMapping("/article")
     public ResponseEntity<String> createArticle(@RequestBody ArticleDto articleDto){
@@ -28,8 +24,30 @@ public class ArticleController {
         return new ResponseEntity<>("New article created", HttpStatus.CREATED);
     }
 
+    @GetMapping("/article")
+    public List<Article> getAllArticles(@RequestParam(name="pageNo", required = false)Integer pageNo, @RequestParam(name="size", required = false)Integer size){
+
+        return articleService.getAllArticles(pageNo, size);
+    }
+
     @GetMapping("/article/{id}")
     public Article getAnArticle(@PathVariable("id") Long id){
         return articleService.getAnArticle(id);
     }
+
+    @PutMapping("/article/{id}")
+    public String updateArticle(@PathVariable("id") Long id, @RequestBody ArticleDto articleDto){
+        articleService.updateArticle(id, articleDto);
+
+        return "Article has been updated";
+    }
+
+    @PatchMapping("/article/{id}")
+    public String updateArticle(@PathVariable("id") Long id, @RequestBody Map<String, Object> requestDto){
+        articleService.updateArticle(id, requestDto);
+
+        return "Article has been updated";
+    }
+
+
 }
